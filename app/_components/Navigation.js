@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+
 import Link from "next/link";
 import { auth } from "@/app/_lib/auth";
+import NavLink from "./NavLink";
 
 export default async function Navigation() {
   const session = await auth();
@@ -9,20 +11,10 @@ export default async function Navigation() {
     <nav className="z-10 text-xl">
       <ul className="flex gap-16 items-center">
         <li>
-          <Link
-            href="/cabins"
-            className="hover:text-accent-400 transition-colors"
-          >
-            Cabins
-          </Link>
+          <NavLink href="/cabins" label="cabin" />
         </li>
         <li>
-          <Link
-            href="/about"
-            className="hover:text-accent-400 transition-colors"
-          >
-            About
-          </Link>
+          <NavLink href="/about" label="About" />
         </li>
         <li>
           {session?.user?.image ? (
@@ -39,12 +31,7 @@ export default async function Navigation() {
               <span>Guest area</span>
             </Link>
           ) : (
-            <Link
-              href="/account"
-              className="hover:text-accent-400 transition-colors"
-            >
-              Guest area
-            </Link>
+            <NavLink href="/account" label="Guest area" />
           )}
         </li>
       </ul>

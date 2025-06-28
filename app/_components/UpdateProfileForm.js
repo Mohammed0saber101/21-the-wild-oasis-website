@@ -2,18 +2,27 @@
 "use client";
 
 import { updateGuest } from "@/app/_lib/actions";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
-function UpdateProfileForm({ children, guest }) {
-  const { fullName, email, nationalID, nationality, countryFlag } = guest;
+export default function UpdateProfileForm({ children, guest }) {
+  const initialState = guest;
 
-  useFormState();
+  const reducer = async (prevState, formData) => {
+    return await updateGuest(prevState, formData);
+  };
+
+  const [state, formAction, isPending] = useActionState(reducer, initialState);
+
+  const { fullName, email, nationalID, nationality, countryFlag, error } =
+    state;
 
   return (
     <form
-      action={updateGuest}
+      action={formAction}
       className="bg-primary-900 py-8 px-12 text-lg flex gap-6 flex-col"
     >
+      {error && <p className="text-red-400">{error}</p>}
+
       <div className="space-y-2">
         <label>Full name</label>
         <input
@@ -57,12 +66,19 @@ function UpdateProfileForm({ children, guest }) {
       </div>
 
       <div className="flex justify-end items-center gap-6">
-        <button className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-          Update profile
-        </button>
+        <Button isPending={isPending} />
       </div>
     </form>
   );
 }
 
-export default UpdateProfileForm;
+function Button({ isPending }) {
+  return (
+    <button
+      className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300"
+      disabled={isPending}
+    >
+      {isPending ? "Updating..." : "Update profile"}
+    </button>
+  );
+}
