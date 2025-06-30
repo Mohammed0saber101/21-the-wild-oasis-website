@@ -175,7 +175,7 @@ export async function createGuest(newGuest) {
 
   return data;
 }
-
+/*
 export async function createBooking(newBooking) {
   const { data, error } = await supabase
     .from("bookings")
@@ -191,7 +191,7 @@ export async function createBooking(newBooking) {
 
   return data;
 }
-
+*/
 // export async function updateBooking(id, updatedFields) {
 //   const { data, error } = await supabase
 //     .from("bookings")
